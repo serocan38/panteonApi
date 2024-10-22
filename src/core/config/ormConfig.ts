@@ -17,7 +17,5 @@ export const ormConfig: DataSourceOptions = {
         "charset": "utf8mb4",
         "collation": "utf8mb4_unicode_ci"
     },
-    entities: ["src/entity/**/*.ts"],
-    migrations: ["src/migration/**/*.ts"],
-    subscribers: ["src/subscriber/**/*.ts"],
+    entities: ["src/entity/*.ts"],
 };

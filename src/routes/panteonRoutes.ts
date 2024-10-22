@@ -1,15 +1,9 @@
-import { Router, Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
+import LeaderboardController from '../controller/leaderboardController';
 
 const router = Router();
+const leaderboardController = new LeaderboardController()
 
-router.get('/:id', (req: Request, res: Response) => {
-    const { id } = req.params;
-    res.json({ message: `User with id: ${id}` });
-});
-
-router.post('/', (req: Request, res: Response) => {
-    const { name, age } = req.body;
-    res.json({ message: `User created: ${name}, age: ${age}` });
-});
+router.get('/getLeadership/:id?', leaderboardController.getLeaderboardWithSpesificUser);
 
 export default router;

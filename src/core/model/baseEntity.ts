@@ -1,9 +1,15 @@
-import { BeforeRecover, BeforeSoftRemove, Column, CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from "typeorm"
+import { BaseEntity, BeforeRecover, BeforeSoftRemove, Column, CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from "typeorm"
 import { STATUS } from "../enum/baseEnum"
 
-export default abstract class BaseEntityModel {
+export default abstract class BaseEntityModel extends BaseEntity {
     @PrimaryGeneratedColumn("increment", { type: "bigint" })
     id: bigint;
+
+    @Column({ nullable: true })
+    title: string;
+
+    @Column({ nullable: true, type: 'varchar', length: 1000 })
+    description: string;
 
     @CreateDateColumn()
     createDate: Date

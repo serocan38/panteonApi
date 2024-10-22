@@ -2,21 +2,23 @@ import { createClient } from 'redis';
 import config from '../../config/config';
 
 const { host, port } = config.redis
-const client = createClient({
+const redisClient = createClient({
     url: `redis://${host}:${port}`,
 });
 
-client.on('error', (err) => {
+redisClient.on('error', (err) => {
     console.error('Redis error: ', err);
 });
 
 const connectRedis = async () => {
     try {
-        await client.connect();
+        await redisClient.connect();
         console.log('Redis connected');
     } catch (error) {
         console.error('Failed to connect to Redis:', error);
     }
 };
 
-export { client, connectRedis };
+const multi = redisClient.multi()
+
+export { redisClient, connectRedis, multi };
