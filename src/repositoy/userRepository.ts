@@ -2,7 +2,7 @@ import { In, Like } from "typeorm";
 import BaseRepository from "../core/repository/baseRepository"
 import { User } from "../entity/user"
 import { databaseManager } from "../core/database/databaseManager";
-import { GET_ALL_USERS, SEARCH_USERS } from "../constants/queryConstants";
+import { GET_ALL_USERS } from "../constants/queryConstants";
 import { UserModel } from "../model/userModel";
 
 export default class UserRepository extends BaseRepository<User> {
