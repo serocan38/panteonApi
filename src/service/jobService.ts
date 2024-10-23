@@ -18,7 +18,7 @@ export default class JobService {
 
         const top100Users = await this.leaderboardService.getTop100Users()
         await this.leaderboardService.distributeRewards(top100Users);
-        // await transactionRepository.resetWeeklyBalance()
+        await transactionRepository.resetWeeklyBalance()
         await this.leadershipHandler();
     }
 }
