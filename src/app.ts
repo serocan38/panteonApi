@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import routes from './routes/index';
 import { requestLoggerMiddleware } from './core/middleware/requestLoggerMiddleware';
 import { connectRedis } from './core/database/redis/redisClient';
@@ -21,7 +22,8 @@ const startServer = async () => {
     try {
         await databaseManager.connect();
         await connectRedis();
-
+        
+        app.use(cors());
         app.use(express.json());
         app.use(express.urlencoded({ extended: true }));
         app.use(requestLoggerMiddleware);

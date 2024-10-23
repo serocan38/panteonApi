@@ -24,21 +24,23 @@ class LeaderboardController {
                         const ids = neighborUsers.map(i => BigInt(i.value));
                         const neighborUserList = await this.userRepository.getUsersByIds(ids);
                         const neighborUserModelList = neighborUserList.map(i => {
+                            const idString = i.id.toString();
+                            const neighborUser = neighborUsers.find(u => u.value === idString)
                             return {
-                                id: i.id.toString(),
+                                id: idString,
                                 username: i.username,
                                 countryName: i.country?.title,
-                                score: i.balance?.weeklyBalance
+                                score: neighborUser?.score
                             } as UserModel
                         }).sort((a, b) => b.score - a.score)
                         users = users.concat(neighborUserModelList);
                     }
                 }
             }
-            ResponseHelper.sendSuccess(res, 'success', users);
-        } catch (error) {
-            console.error(error);
-            ResponseHelper.sendError(res, 'error');
+            return ResponseHelper.sendSuccess(res, 'success', users);
+        } catch (error: any) {
+            console.error(error.message);
+            return ResponseHelper.sendError(res, 'error');
         }
     };
 }

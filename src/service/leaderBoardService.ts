@@ -21,7 +21,7 @@ export default class LeaderboardService {
                 console.log("User not found")
                 return;
             }
-            const neighbors = await redisClient.zRangeWithScores(this.redisService.ALL_USERS_REDIS_KEY, rank - 3, rank + 2);
+            const neighbors = await redisClient.zRangeWithScores(this.redisService.ALL_USERS_REDIS_KEY, rank - 3, rank + 2, { REV: true, });
 
             return neighbors;
         } catch (error) {
@@ -41,7 +41,7 @@ export default class LeaderboardService {
                     id: user.id,
                     username: user.username,
                     score: Number(user.score),
-                    countryName: user.country,
+                    countryName: user.countryName,
                 } as UserModel))
                 .sort((a, b) => b.score - a.score);
 
@@ -73,7 +73,7 @@ export default class LeaderboardService {
     async updateLeaderboardUsers(): Promise<void> {
         try {
             const multi = redisClient.multi();
-            const topUsers = await redisClient.zRangeWithScores(this.redisService.ALL_USERS_REDIS_KEY, 0, 99);
+            const topUsers = await redisClient.zRangeWithScores(this.redisService.ALL_USERS_REDIS_KEY, 0, 99, { REV: true, });
 
             const userIds = topUsers.map(user => BigInt(user.value));
             const allUserInfos = await this.userRepository.getUsersByIds(userIds);

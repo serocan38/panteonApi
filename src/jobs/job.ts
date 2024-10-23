@@ -71,7 +71,6 @@ export default class JobScheduler {
     }
 
     start() {
-        this.createTransaction()
         this.weeklyJob.start();
         this.fiveMinuteJob.start();
         console.log('Job scheduler started.');

@@ -1,7 +1,4 @@
 import { redisClient } from "../core/database/redis/redisClient";
-import { Transaction } from "../entity/transaction";
-import { UserModel } from "../model/userModel";
-import TransactionRepository from "../repositoy/transactionRepository";
 
 export default class RedisService {
     public ALL_USERS_REDIS_KEY = "allUsers"
@@ -13,7 +10,7 @@ export default class RedisService {
     }
 
     async getRank(value: string) {
-        return await redisClient.zRank(this.ALL_USERS_REDIS_KEY, value);
+        return await redisClient.zRevRank(this.ALL_USERS_REDIS_KEY, value,);
     }
 
     async getUserIds(value: string) {
