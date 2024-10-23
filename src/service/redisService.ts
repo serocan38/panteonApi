@@ -17,6 +17,11 @@ export default class RedisService {
         return await redisClient.zRangeWithScores(this.ALL_USERS_REDIS_KEY, 0, 99);
     }
 
+    async getUserByRank(rank: number) {
+        const result = await redisClient.zRangeWithScores(this.ALL_USERS_REDIS_KEY, rank, rank, { REV: true });
+        return result[0];
+    }
+
     async getTotalScoreFromLeaderboard(): Promise<number> {
         const allUsersWithScores = await redisClient.zRangeWithScores(this.ALL_USERS_REDIS_KEY, 0, -1);
         return allUsersWithScores.reduce((sum, user) => sum + Number(user.score), 0);

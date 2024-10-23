@@ -14,6 +14,10 @@ export default class UserRepository extends BaseRepository<User> {
         return await this.selectEntity(['id', 'username', 'country.title'], [{ id: In(userIds) }], ['country', 'balance'], true)
     }
 
+    async getUserById(id: BigInt): Promise<User> {
+        return await this.selectOne(['id', 'username', 'country.title'], [{ id }], ['country', 'balance'], true)
+    }
+
     async getAllUsers(): Promise<UserModel[]> {
         return await databaseManager.runQuery(GET_ALL_USERS);
     }

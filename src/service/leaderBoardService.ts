@@ -1,7 +1,7 @@
 import { redisClient } from "../core/database/redis/redisClient";
 import { Transaction } from "../entity/transaction";
 import { User } from "../entity/user";
-import { UserModel } from "../model/userModel";
+import { RedisModel, UserModel } from "../model/userModel";
 import TransactionRepository from "../repositoy/transactionRepository";
 import UserRepository from "../repositoy/userRepository";
 import RedisService from "./redisService";
@@ -22,8 +22,10 @@ export default class LeaderboardService {
                 return;
             }
             const neighbors = await redisClient.zRangeWithScores(this.redisService.ALL_USERS_REDIS_KEY, rank - 3, rank + 2, { REV: true, });
-
-            return neighbors;
+            neighbors.forEach((neighbor: RedisModel, index) => {
+                neighbor.rank = rank - 3 + index;
+            });
+            return neighbors as RedisModel[];
         } catch (error) {
             console.error('getPlayerRankingAndNeighbors ERROR:', error);
         }
@@ -37,13 +39,14 @@ export default class LeaderboardService {
             const usersData = await Promise.all(userDataPromises);
 
             const sortedUsers: UserModel[] = usersData
-                .map(user => ({
+                .sort((a, b) => Number(b.score) - Number(a.score))
+                .map((user, index) => ({
                     id: user.id,
                     username: user.username,
                     score: Number(user.score),
                     countryName: user.countryName,
-                } as UserModel))
-                .sort((a, b) => b.score - a.score);
+                    rank: index + 1
+                } as UserModel));
 
             return sortedUsers;
         } catch (error: any) {

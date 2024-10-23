@@ -10,6 +10,10 @@ router.get('/getLeaderboard/:id?', (req: Request, res: Response) => {
     leaderboardController.getLeaderboardWithSpesificUser(req, res)
 });
 
+router.get('/getLeaderboardUser/:id', (req: Request, res: Response) => {
+    leaderboardController.getLeaderboardUser(req, res)
+});
+
 router.get('/autocomplete/:searchTerm', (req: Request, res: Response) => {
     userController.searchUsers(req, res)
 });
